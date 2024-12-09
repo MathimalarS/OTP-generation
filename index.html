@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      margin-top: 100px;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .otp-box {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .otp-box input {
+      width: 40px;
+      height: 40px;
+      margin: 0 5px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #343f40;
+      border: 2px solid #343f40;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #17a2b8;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #138496;
+    }
+    #otpMessage {
+      font-size: 20px;
+      font-weight: bold;
+      color: #3e5356;
+      margin-top: 20px;
+    }
+    #verificationCode {
+      font-size: 18px;
+      font-weight: bold;
+      color: #00796b;
+      margin-top: 10px;
+    }
+    .checkmark, .error {
+      display: inline-block;
+      width: 20px; 
+      height: 20px; 
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      font-size: 14px; 
+      margin-left: 10px;
+      margin-top: 8px; 
+    }
+    .checkmark {
+      background-color: green;
+      color: white;
+    }
+    .error {
+      background-color: red;
+      color: rgb(255, 255, 255);
+    }
+    #result {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OTP Generator</h1>
+    <button onclick="generateOTP()">Generate OTP</button>
+    <p id="otpMessage"></p>
+    <div id="verificationCode">Enter the OTP below to validate:</div>
+    <div class="otp-box">
+        <input type="password" maxlength="1" id="otp1" oninput="moveFocus(otp1, otp2)">
+        <input type="password" maxlength="1" id="otp2" oninput="moveFocus(otp2, otp3)">
+        <input type="password" maxlength="1" id="otp3" oninput="moveFocus(otp3, otp4)">
+        <input type="password" maxlength="1" id="otp4" oninput="validateOTP()">
+        <span id="result"></span> 
+    </div>
+  </div>
+
+  <script>
+    let generatedOtp;
+
+    function generateOTP() {
+      generatedOtp = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("otpMessage").textContent = `Your OTP is: ${generatedOtp}`;
+      document.getElementById("result").textContent = '';
+      document.getElementById("otp1").value = '';
+      document.getElementById("otp2").value = '';
+      document.getElementById("otp3").value = '';
+      document.getElementById("otp4").value = '';
+    }
+
+    function validateOTP() {
+      const otp1 = document.getElementById("otp1").value;
+      const otp2 = document.getElementById("otp2").value;
+      const otp3 = document.getElementById("otp3").value;
+      const otp4 = document.getElementById("otp4").value;
+      const userInput = otp1 + otp2 + otp3 + otp4;
+
+      const result = document.getElementById("result");
+
+      if (userInput.length === 4) {
+        if (userInput == generatedOtp) {
+          result.innerHTML = '<span class="checkmark">✔</span>'; 
+        } else {
+          result.innerHTML = '<span class="error">X</span>';
+        }
+      }
+    }
+
+    function moveFocus(current, next) {
+      if (current.value.length == 1 && next) {
+        next.focus();
+      }
+    }
+  </script>
+</body>
+</html>
